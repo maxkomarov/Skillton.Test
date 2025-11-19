@@ -71,6 +71,7 @@
     <Compile Include="Abstract\QueryConstants.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
+    <Compile Include="Controllers\EmployeeFormatter.cs" />
     <Compile Include="Controllers\SqlCEDatabaseController.cs" />
     <Compile Include="Controllers\DataController.cs" />
     <Compile Include="Controllers\EmployeeBuilder.cs" />

@@ -2,6 +2,9 @@
 
 namespace Skillton.Test.Console_Net48.Abstract
 {
+    /// <summary>
+    /// Интерфейс сущности Employee
+    /// </summary>
     internal interface IEmployee
     {
         int EmployeeId { get; set; }
@@ -9,9 +12,6 @@ namespace Skillton.Test.Console_Net48.Abstract
         string LastName { get; set; }
         string Email { get; set; }
         DateTime DateOfBirth { get; set; }
-        decimal Salary { get; set; }
-
-        //Ну, не совсем он тут на месте....
-        string ToConsoleString(char divider = '|', bool addHorizontalLine = false);
+        decimal Salary { get; set; }        
     }
 }

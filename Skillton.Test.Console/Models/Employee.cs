@@ -1,7 +1,6 @@
 ﻿using Skillton.Test.Console_Net48.Abstract;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Skillton.Test.Console_Net48.Models
 {
@@ -54,53 +53,9 @@ namespace Skillton.Test.Console_Net48.Models
             return res;
         }
 
-        //Этот метод не на месте, надо бы выносить в отдельный форматтер
-        public string ToConsoleString(char divider = '|',
-                                      bool addHorizontalLine = false)
-        {
-            string res = $"" 
-                + $"\t"
-                + $"{EmployeeId,-10}"
-                + $"{divider}"
-                + $"{LastName,-54}"
-                + $"{divider}"
-                + $"{FirstName,-54}"
-                + $"{divider}"
-                + $"{Email,-104}"
-                + $"{divider}"
-                + $"{DateOfBirth.ToShortDateString(),-14}"
-                + $"{divider}"
-                + $"{$"{Salary:C2}",-13}"
-                + $"{divider}";
-            if (addHorizontalLine)
-                res += ("\r\n\t" + new string('-', res.Length-1));
+        
 
-            return res;
-        }
-
-        //Этот метод не на месте, надо бы выносить в отдельный форматтер
-        public static string GetTableHeader(char divider = '|')
-        {
-            return 
-                  "\t"
-                + new string('-', 255)
-                + "\r\n\t"
-                + "ИД".PadRight(10)
-                + divider
-                + "Фамилия".PadRight(54)
-                + divider
-                + "Имя".PadRight(54)
-                + divider
-                + "E-mail".PadRight(104)
-                + divider
-                + "Дата рождения".PadRight(14)
-                + divider
-                + "Зарплата".PadRight(13)
-                + divider
-                + "\r\n\t"
-                + new string('-', 255)
-                .ToString();    
-        }
+        
 
         #region Атрибуты модели
         //Вроде бы можно валидацию и в сеттеры совать, но это будет жесткая привязка сущности

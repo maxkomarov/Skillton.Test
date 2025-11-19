@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json.Linq;
-using Skillton.Test.Console_Net48.Abstract;
+﻿using Skillton.Test.Console_Net48.Abstract;
 using Skillton.Test.Console_Net48.Controllers;
 using Skillton.Test.Console_Net48.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 
 namespace Skillton.Test.Console_Net48
@@ -113,10 +110,10 @@ namespace Skillton.Test.Console_Net48
             Console.WriteLine();
             Console.WriteLine("\tЗаписи в таблице сотрудников (Employees):");
             Console.WriteLine();
-            Console.WriteLine(Employee.GetTableHeader());
+            Console.WriteLine(EmployeeFormatter.GetEmployeeTableHeader());
             data.ToList().ForEach(
                 employee => Console.WriteLine(
-                    employee.ToConsoleString('|', true)));
+                    EmployeeFormatter.ToRowString(employee, '|', true)));
             Console.WriteLine();
         }
 
