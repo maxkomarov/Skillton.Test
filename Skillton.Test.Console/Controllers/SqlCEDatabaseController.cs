@@ -69,11 +69,11 @@ namespace Skillton.Test.Console_Net48.Controllers
 
                         if (cmdParams != null && cmdParams.ContainsKey("EmployeeID"))
                         {
-                            command.CommandText = Constants.SELECT_BY_ID_CMD_TEXT;
+                            command.CommandText = QueryConstants.SELECT_BY_ID_CMD_TEXT;
                             command.Parameters.AddWithValue("EmployeeID", cmdParams["EmployeeID"]);
                         }
                         else
-                            command.CommandText = Constants.SELECT_ALL_CMD_TEXT;
+                            command.CommandText = QueryConstants.SELECT_ALL_CMD_TEXT;
 
                         SqlCeDataReader reader = command.ExecuteReader();
                         
@@ -112,7 +112,7 @@ namespace Skillton.Test.Console_Net48.Controllers
             
             try
             {
-                res = (decimal)ExecuteScalar(Constants.SELECT_AVG_SALARY_CMD_TEXT);
+                res = (decimal)ExecuteScalar(QueryConstants.SELECT_AVG_SALARY_CMD_TEXT);
             }
             catch (Exception ex)
             {
@@ -136,7 +136,7 @@ namespace Skillton.Test.Console_Net48.Controllers
 
             try
             {
-                int res = (int)ExecuteScalar(Constants.SELECT_SALARY_ABV_AVG_CMD_TEXT, cmdParams);
+                int res = (int)ExecuteScalar(QueryConstants.SELECT_SALARY_ABV_AVG_CMD_TEXT, cmdParams);
                 return res;
             }
             catch (Exception ex)
@@ -152,7 +152,7 @@ namespace Skillton.Test.Console_Net48.Controllers
         /// <returns></returns>
         public int ExecuteUpdate(IDictionary<string, object> cmdParams)
         {
-            return ExecuteCommand(Constants.UPDATE_CMD_TEXT, cmdParams);
+            return ExecuteCommand(QueryConstants.UPDATE_CMD_TEXT, cmdParams);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Skillton.Test.Console_Net48.Controllers
         /// <returns></returns>        
         public int ExecuteInsert(IDictionary<string, object> cmdParams)
         {
-            return ExecuteCommand(Constants.INSERT_CMD_TEXT, cmdParams);
+            return ExecuteCommand(QueryConstants.INSERT_CMD_TEXT, cmdParams);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Skillton.Test.Console_Net48.Controllers
         /// <returns></returns>
         public int ExecuteDelete(IDictionary<string, object> cmdParams)
         {
-            return ExecuteCommand(Constants.DELETE_CMD_TEXT, cmdParams);
+            return ExecuteCommand(QueryConstants.DELETE_CMD_TEXT, cmdParams);
         }
 
 

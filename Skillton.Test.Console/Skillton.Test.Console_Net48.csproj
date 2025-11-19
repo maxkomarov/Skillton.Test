@@ -68,6 +68,7 @@
     <Compile Include="Abstract\ILogSettings.cs" />
     <Compile Include="Abstract\IValidationController.cs" />
     <Compile Include="Abstract\IEmployeeValidationParams.cs" />
+    <Compile Include="Abstract\QueryConstants.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\SqlCEDatabaseController.cs" />
