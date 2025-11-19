@@ -44,11 +44,12 @@ namespace Skillton.Test.Console_Net48.Models
         //Это тоже, по идее, не свойство модели, нужен типа SampleBuilder<Employee> с рандомайзерами
         public static IList<IEmployee> GetSamples()
         {
-            List<IEmployee> res = new List<IEmployee>();
-
-            res.Add(new Employee(0, "Иван", "Петров", "petrov@ivan.net", DateTime.Now.AddYears(-50), 1000));
-            res.Add(new Employee(0, "Петр", "Иванов", "ivanov@petr.net", DateTime.Now.AddYears(-40), 2000));
-            res.Add(new Employee(0, "Сидор", "Прохоров", "prokhorov@sidor.net", DateTime.Now.AddYears(-35), 3000));
+            List<IEmployee> res = new List<IEmployee>
+            {
+                new Employee(0, "Иван", "Петров", "petrov@ivan.net", DateTime.Now.AddYears(-50), 1000),
+                new Employee(0, "Петр", "Иванов", "ivanov@petr.net", DateTime.Now.AddYears(-40), 2000),
+                new Employee(0, "Сидор", "Прохоров", "prokhorov@sidor.net", DateTime.Now.AddYears(-35), 3000)
+            };
 
             return res;
         }
@@ -57,21 +58,20 @@ namespace Skillton.Test.Console_Net48.Models
         public string ToConsoleString(char divider = '|',
                                       bool addHorizontalLine = false)
         {
-            string res = new StringBuilder()
-                .Append('\t')
-                .Append(EmployeeId.ToString().PadRight(10))
-                .Append(divider)
-                .Append(LastName.PadRight(54))
-                .Append(divider)
-                .Append(FirstName.PadRight(54))
-                .Append(divider)
-                .Append(Email.PadRight(104))
-                .Append(divider)
-                .Append($"{DateOfBirth:d}".PadRight(14))
-                .Append(divider)
-                .Append($"{Salary:C2}".PadRight(13))
-                .Append(divider)
-                .ToString();
+            string res = $"" 
+                + $"\t"
+                + $"{EmployeeId,-10}"
+                + $"{divider}"
+                + $"{LastName,-54}"
+                + $"{divider}"
+                + $"{FirstName,-54}"
+                + $"{divider}"
+                + $"{Email,-104}"
+                + $"{divider}"
+                + $"{DateOfBirth.ToShortDateString(),-14}"
+                + $"{divider}"
+                + $"{$"{Salary:C2}",-13}"
+                + $"{divider}";
             if (addHorizontalLine)
                 res += ("\r\n\t" + new string('-', res.Length-1));
 
@@ -81,24 +81,24 @@ namespace Skillton.Test.Console_Net48.Models
         //Этот метод не на месте, надо бы выносить в отдельный форматтер
         public static string GetTableHeader(char divider = '|')
         {
-            return new StringBuilder()
-                .Append('\t')
-                .Append(new string('-', 255))
-                .Append("\r\n\t")
-                .Append("ИД".PadRight(10))
-                .Append(divider)
-                .Append("Фамилия".PadRight(54))
-                .Append(divider)
-                .Append("Имя".PadRight(54))
-                .Append(divider)
-                .Append("E-mail".PadRight(104))
-                .Append(divider)
-                .Append("Дата рождения".PadRight(14))
-                .Append(divider)
-                .Append("Зарплата".PadRight(13))
-                .Append(divider)
-                .Append("\r\n\t")
-                .Append(new string('-', 255))
+            return 
+                  "\t"
+                + new string('-', 255)
+                + "\r\n\t"
+                + "ИД".PadRight(10)
+                + divider
+                + "Фамилия".PadRight(54)
+                + divider
+                + "Имя".PadRight(54)
+                + divider
+                + "E-mail".PadRight(104)
+                + divider
+                + "Дата рождения".PadRight(14)
+                + divider
+                + "Зарплата".PadRight(13)
+                + divider
+                + "\r\n\t"
+                + new string('-', 255)
                 .ToString();    
         }
 

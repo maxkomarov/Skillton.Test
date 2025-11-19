@@ -1,8 +1,5 @@
 ﻿using Skillton.Test.Console_Net48.Abstract;
 using Skillton.Test.Console_Net48.Helpers;
-using System;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Skillton.Test.Console_Net48.Models
 {
@@ -10,8 +7,19 @@ namespace Skillton.Test.Console_Net48.Models
     {
         private readonly string _passwordKey = "cryptoKey123";
         private string _databasePassword;
+
+        /// <summary>
+        /// Загрузка параметров из конфиг-файла
+        /// Initializes a new instance of the <see cref="DatabaseConfigParams"/> class.
+        /// </summary>
         public DatabaseConfigParams() { Load(); }
 
+        /// <summary>
+        /// Строка подключения на основе параметров конфига
+        /// </summary>
+        /// <value>
+        /// The connection string.
+        /// </value>
         public string ConnectionString 
         { 
             get
@@ -23,8 +31,17 @@ namespace Skillton.Test.Console_Net48.Models
             }
         }
 
+        /// <summary>
+        /// Имя файла БД
+        /// </summary>
+        /// <value>
+        /// The name of the database file.
+        /// </value>
         public string DatabaseFileName { get; private set; }
 
+        /// <summary>
+        /// Загрузка (инициализация) конфигурации
+        /// </summary>
         public void Load()
         {
             if (!string.IsNullOrEmpty(Properties.Settings.Default.DatabaseFileName))
