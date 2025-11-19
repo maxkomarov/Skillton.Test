@@ -55,6 +55,10 @@ namespace Skillton.Test.Console_Net48.Abstract
         /// <returns>int - кол-во, получающее выше средней, decimal - значение средней з/п</returns>
         Tuple<int, decimal> GetAboveAvgSalaryCount();
 
+        /// <summary>
+        /// Сохранить изменения в сущности
+        /// </summary>
+        /// <param name="employee">The employee.</param>
         void SaveChanges(IEmployee employee);
     }
 }

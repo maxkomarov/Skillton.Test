@@ -1,4 +1,5 @@
 ﻿using Skillton.Test.Console_Net48.Abstract;
+using Skillton.Test.Console_Net48.Presenters;
 using System;
 
 namespace Skillton.Test.Console_Net48.Controllers
@@ -8,12 +9,12 @@ namespace Skillton.Test.Console_Net48.Controllers
     /// </summary>
     internal class InputEmployeeController
     {
-        IEmployee _employee;
-        private readonly IValidationService _validationController;
+        private EmployeePresenter _employeePresenter;
+        private readonly IValidationService _validationService;
         private readonly IEmployeeRepository _repository;
         public InputEmployeeController(IValidationService validationController, IEmployeeRepository dataController) 
         {
-            _validationController = validationController
+            _validationService = validationController
                 ?? throw new ArgumentNullException(Constants.NULLABLE_ARGUMENT_NOT_ALLOWED, 
                     nameof(validationController));
 
@@ -22,11 +23,11 @@ namespace Skillton.Test.Console_Net48.Controllers
                     nameof(dataController));
         }
 
-        public IEmployee Run(IEmployee employee)
+        public void Run(IEmployee employee)
         {
-            _employee = employee;
-            while (RunSelector());
-            return _employee;
+            _employeePresenter = new EmployeePresenter(_validationService,employee);
+
+            while (RunSelector());            
         }
 
         bool RunSelector()
@@ -34,11 +35,11 @@ namespace Skillton.Test.Console_Net48.Controllers
             Console.WriteLine();
             Console.WriteLine("--- Создание/редактирование полей записи---");
             Console.WriteLine();
-            Console.WriteLine($"\t1. Изменить фамилию. Текущее значение: '{_employee.LastName}'");
-            Console.WriteLine($"\t2. Изменить имя.Текущее значение: '{_employee.FirstName}'");
-            Console.WriteLine($"\t3. Изменить E-mail. Текущее значение: '{_employee.Email}'");
-            Console.WriteLine($"\t4. Изменить дату рождения. Текущее значение: '{_employee.DateOfBirth.ToShortDateString()}'");
-            Console.WriteLine($"\t5. Изменить размер зарплаты. Текущее значение: '{_employee.Salary}'");
+            Console.WriteLine($"\t1. Изменить фамилию. Текущее значение: '{_employeePresenter.Employee.LastName}'");
+            Console.WriteLine($"\t2. Изменить имя.Текущее значение: '{_employeePresenter.Employee.FirstName}'");
+            Console.WriteLine($"\t3. Изменить E-mail. Текущее значение: '{_employeePresenter.Employee.Email}'");
+            Console.WriteLine($"\t4. Изменить дату рождения. Текущее значение: '{_employeePresenter.Employee.DateOfBirth.ToShortDateString()}'");
+            Console.WriteLine($"\t5. Изменить размер зарплаты. Текущее значение: '{_employeePresenter.Employee.Salary}'");
             Console.WriteLine("\t8. Сохранить изменения и выйти в главное меню");
             Console.WriteLine("\t9. Отменить изменения и выйти в главное меню");
             Console.WriteLine();
@@ -49,151 +50,32 @@ namespace Skillton.Test.Console_Net48.Controllers
             switch (choice)
             {
                 case "1":
-                    ChangeLastName("Фамилия");
+                    _employeePresenter.ChangeLastName("Фамилия");
                     return true;
                 case "2":
-                    ChangeFirstName("Имя");
+                    _employeePresenter.ChangeFirstName("Имя");
                     return true;
                 case "3":
-                    ChangeEmail("Email");
+                    _employeePresenter.ChangeEmail("Email");
                     return true;
                 case "4":
-                    ChangeDateOfBirth("Дата рождения");
+                    _employeePresenter.ChangeDateOfBirth("Дата рождения");
                     return true;
                 case "5":
-                    ChangeSalary("Зарплата"); ;
+                    _employeePresenter.ChangeSalary("Зарплата"); ;
                     return true;
                 case "8":
-                    SaveChanges();
-                    return false;
+                    {
+                        _validationService.Validate(_employeePresenter.Employee);
+                        _repository.SaveChanges(_employeePresenter.Employee);
+                        return false;
+                    }
                 case "9":
                     return false;
                 default:
                     Console.WriteLine("Неверный выбор. Нажмите любую клавишу и попробуйте снова.");
                     Console.ReadKey();
                     return true;
-            }
-        }
-
-        void ChangeFirstName(string fieldName)
-        {
-            Console.WriteLine();
-            Console.Write($"Введите новое значение поля [{fieldName}]: ");
-            string input = Console.ReadLine();
-
-            try
-            {
-                _validationController.CheckFirstName(input);
-                _validationController.CheckNameMaskValidity(input, "FirstName");
-                _employee.FirstName = input;
-            }
-            catch (Exception e)
-            { 
-                Console.WriteLine($"ОШИБКА! Попробуйте еще раз. Подробно:{e.Message}");
-                Console.WriteLine();
-            }
-        }
-
-        void ChangeLastName(string fieldName)
-        {
-            Console.WriteLine();
-            Console.Write($"Введите новое значение поля [{fieldName}]: ");
-            string input = Console.ReadLine();
-
-            try
-            {
-                _validationController.CheckLastName(input);
-                _validationController.CheckNameMaskValidity(input, "LastName");
-                _employee.LastName = input;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ОШИБКА! Попробуйте еще раз. Подробно:{e.Message}");
-                Console.WriteLine();
-            }
-        }
-
-        void ChangeEmail(string fieldName)
-        {
-            Console.WriteLine();
-            Console.Write($"Введите новое значение поля [{fieldName}]: ");
-            string input = Console.ReadLine();
-
-            try
-            {
-                _validationController.CheckEmailMaskValidity(input, "Email");
-                _employee.Email = input;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"ОШИБКА! Попробуйте еще раз. Подробно:{e.Message}");
-                Console.WriteLine();
-            }
-        }
-
-        void ChangeDateOfBirth(string fieldName)
-        {
-            Console.WriteLine();
-            Console.Write($"Введите новое значение поля [{fieldName}]: ");
-            string input = Console.ReadLine();
-
-            if (DateTime.TryParse(input, out DateTime date))
-            {
-                try
-                {
-                    _validationController.CheckDateOfBirthVilidity(date);
-                    _employee.DateOfBirth = date;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"ОШИБКА! Попробуйте еще раз. Подробно:{e.Message}");
-                    Console.WriteLine();
-                }
-            }
-            else
-            {
-                Console.WriteLine($"ОШИБКА ВВОДА! Попробуйте еще раз. Формат даты:dd.mm.yyyy");
-                Console.WriteLine();
-            }
-        }
-
-        void ChangeSalary(string fieldName)
-        {
-            Console.WriteLine();
-            Console.Write($"Введите новое значение поля [{fieldName}]: ");
-            string input = Console.ReadLine();
-
-            if (decimal.TryParse(input, out decimal salary))
-            {
-
-                try
-                {
-                    _validationController.CheckSalaryValidity(salary);
-                    _employee.Salary = salary;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"ОШИБКА! Попробуйте еще раз. Подробно:{e.Message}");
-                    Console.WriteLine();
-                }
-            }
-            else
-            {
-                Console.WriteLine($"ОШИБКА ВВОДА! Попробуйте еще раз. Формат десятичного числа: xxxxxx.xx");
-                Console.WriteLine();
-            }            
-        }
-
-        void SaveChanges()
-        {
-            try
-            {
-                _validationController.Validate(_employee);
-                _repository.SaveChanges(_employee);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"\r\n{e.Message}\r\n{e.InnerException?.Message}\r\n"); 
             }
         }
     }

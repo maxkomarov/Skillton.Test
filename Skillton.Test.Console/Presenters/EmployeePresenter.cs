@@ -1,14 +1,34 @@
 ﻿using Skillton.Test.Console_Net48.Abstract;
 using System;
 
-namespace Skillton.Test.Console_Net48
+namespace Skillton.Test.Console_Net48.Presenters
 {
-    internal class Class1
+    internal class EmployeePresenter
     {
-        IValidationService _validationService;
-        IEmployee _employee;
+        private readonly IValidationService _validationService;
+        private IEmployee _employee;
 
-        void ChangeFirstName(string fieldName)
+        public EmployeePresenter(
+            IValidationService validationService,
+            IEmployee employee)
+        {
+            if (validationService == null)
+                throw new ArgumentNullException(
+                    Constants.NULLABLE_ARGUMENT_NOT_ALLOWED,
+                    nameof(validationService));
+
+            if (employee == null)
+                throw new ArgumentNullException(
+                    Constants.NULLABLE_ARGUMENT_NOT_ALLOWED,
+                    nameof(employee));
+
+            _validationService = validationService;
+            _employee = employee;
+        }
+
+        public IEmployee Employee { get => _employee; }
+
+        public void ChangeFirstName(string fieldName)
         {
             Console.WriteLine();
             Console.Write($"Введите новое значение поля [{fieldName}]: ");
@@ -27,7 +47,7 @@ namespace Skillton.Test.Console_Net48
             }
         }
 
-        void ChangeLastName(string fieldName)
+        public void ChangeLastName(string fieldName)
         {
             Console.WriteLine();
             Console.Write($"Введите новое значение поля [{fieldName}]: ");
@@ -46,7 +66,7 @@ namespace Skillton.Test.Console_Net48
             }
         }
 
-        void ChangeEmail(string fieldName)
+        public void ChangeEmail(string fieldName)
         {
             Console.WriteLine();
             Console.Write($"Введите новое значение поля [{fieldName}]: ");
@@ -64,7 +84,7 @@ namespace Skillton.Test.Console_Net48
             }
         }
 
-        void ChangeDateOfBirth(string fieldName)
+        public void ChangeDateOfBirth(string fieldName)
         {
             Console.WriteLine();
             Console.Write($"Введите новое значение поля [{fieldName}]: ");
@@ -90,7 +110,7 @@ namespace Skillton.Test.Console_Net48
             }
         }
 
-        void ChangeSalary(string fieldName)
+        public void ChangeSalary(string fieldName)
         {
             Console.WriteLine();
             Console.Write($"Введите новое значение поля [{fieldName}]: ");

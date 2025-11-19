@@ -167,7 +167,10 @@ namespace Skillton.Test.Console_Net48.Repositories
             return new Tuple<int, decimal>(res, avg);            
         }
 
-
+        /// <summary>
+        /// Сохранить изменения в сущности
+        /// </summary>
+        /// <param name="employee">The employee.</param>
         public void SaveChanges(IEmployee employee)
         {
             try

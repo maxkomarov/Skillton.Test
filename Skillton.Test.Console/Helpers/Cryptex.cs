@@ -68,6 +68,6 @@ namespace Skillton.Test.Console_Net48.Helpers
             {
                 throw new Exception("Ошибка дешифратора данных доступа к БД", ex);
             }
-        }
+        }       
     }
 }
