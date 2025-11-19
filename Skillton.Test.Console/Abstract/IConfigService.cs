@@ -5,7 +5,7 @@ namespace Skillton.Test.Console_Net48.Abstract
     /// <summary>
     /// Интерфейс конфигурации
     /// </summary>
-    internal interface IConfigController
+    internal interface IConfigService
     {
         /// <summary>
         /// Конфигурация

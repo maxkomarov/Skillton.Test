@@ -2,9 +2,9 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Skillton.Test.Console_Net48.Controllers
+namespace Skillton.Test.Console_Net48.Services
 {
-    internal class ValidationController : IValidationController
+    internal class ValidationService : IValidationService
     {
         #region Константы
 
@@ -19,11 +19,11 @@ namespace Skillton.Test.Console_Net48.Controllers
 
         #region Ctor        
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValidationController"/> class.
+        /// Initializes a new instance of the <see cref="ValidationService"/> class.
         /// Параметры валидации обязательны
         /// </summary>
         /// <param name="validationParams">The validation parameters.</param>
-        public ValidationController(IEmployeeValidationParams validationParams) 
+        public ValidationService(IEmployeeValidationParams validationParams) 
         {
             ValidationParams = validationParams ?? throw new ArgumentNullException(NO_PARAMS_FOR_VALIDATE, nameof(validationParams));
         }

@@ -1,17 +1,18 @@
 ﻿using Skillton.Test.Console_Net48.Abstract;
-using Skillton.Test.Console_Net48.Controllers;
 using Skillton.Test.Console_Net48.Models;
+using Skillton.Test.Console_Net48.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace Skillton.Test.Console_Net48
+
+namespace Skillton.Test.Console_Net48.Repositories
 {
-    internal class DataController : ControllerBase, IDataController
+    internal class EmployeeRepository : ServiceBase, IEmployeeRepository
     {
-        private readonly IDataBaseController _dataBaseController;
+        private readonly IDataBaseService _dataBaseController;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataController"/> class.
+        /// Initializes a new instance of the <see cref="EmployeeRepository"/> class.
         /// </summary>
         /// <param name="dataBaseController">The data base controller.</param>
         /// <param name="writeLogAction">The write log action.</param>
@@ -21,8 +22,8 @@ namespace Skillton.Test.Console_Net48
         /// or
         /// sampleSource
         /// </exception>
-        public DataController(
-            IDataBaseController dataBaseController,
+        public EmployeeRepository(
+            IDataBaseService dataBaseController,
             Action<string> writeLogAction) 
         {
             _dataBaseController = dataBaseController
@@ -31,7 +32,7 @@ namespace Skillton.Test.Console_Net48
             WriteLogAction = writeLogAction;
         }
 
-        #region IDataController имплементация
+        #region IEmployeeRepository имплементация
 
         /// <summary>
         /// Удалить запись в Employee в БД
@@ -164,6 +165,32 @@ namespace Skillton.Test.Console_Net48
             int res = _dataBaseController.GetCountWithSalaryAboveAverage(avg);
 
             return new Tuple<int, decimal>(res, avg);            
+        }
+
+
+        public void SaveChanges(IEmployee employee)
+        {
+            try
+            {
+                if (employee.EmployeeId == 0)
+                {
+                    if (AddEmployee(employee) > 0)
+                        Console.WriteLine($"Запись успешно создана в БД!");
+                    else
+                        Console.WriteLine($"Запись в БД не добавлена! Инспектируйте файл лога на предмет ошибок!");
+                }
+                else
+                {
+                    if (UpdateEmployee(employee) > 0)
+                        Console.WriteLine($"Запись успешно изменена в БД!");
+                    else
+                        Console.WriteLine($"Запись в БД не изменена! Инспектируйте файл лога на предмет ошибок!");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"\r\n{e.Message}\r\n{e.InnerException?.Message}\r\n");
+            }
         }
 
         #endregion        

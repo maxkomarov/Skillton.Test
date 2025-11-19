@@ -1,6 +1,6 @@
 ﻿using Skillton.Test.Console_Net48.Abstract;
 
-namespace Skillton.Test.Console_Net48.Controllers
+namespace Skillton.Test.Console_Net48.Helpers
 {
     /// <summary>
     /// Форматтер для отображения IEmployee

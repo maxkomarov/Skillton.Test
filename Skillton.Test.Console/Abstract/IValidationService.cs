@@ -2,7 +2,7 @@
 
 namespace Skillton.Test.Console_Net48.Abstract
 {
-    internal interface IValidationController
+    internal interface IValidationService
     {
 
         /// <summary>

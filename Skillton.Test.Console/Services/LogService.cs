@@ -2,19 +2,19 @@
 using System;
 using System.IO;
 
-namespace Skillton.Test.Console_Net48.Controllers
+namespace Skillton.Test.Console_Net48.Services
 {
     /// <summary>
     /// Реализация интерфейса ILogger
     /// </summary>
     /// <seealso cref="Skillton.Test.Console_Net48.Abstract.ILogger" />
-    internal class LogController : ILogger
+    internal class LogService : ILogger
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LogController"/> class.
+        /// Initializes a new instance of the <see cref="LogService"/> class.
         /// </summary>
         /// <param name="logConfigParams">The log configuration parameters.</param>
-        public LogController(ILogConfigParams logConfigParams)
+        public LogService(ILogConfigParams logConfigParams)
         {
             LogConfigParams = logConfigParams;
         }

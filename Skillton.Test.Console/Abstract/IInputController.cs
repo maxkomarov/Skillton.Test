@@ -11,7 +11,7 @@
         /// <value>
         /// The validation controller.
         /// </value>
-        IValidationController ValidationController { get; }
+        IValidationService ValidationController { get; }
 
         /// <summary>
         /// Запуск рабочего процесса
