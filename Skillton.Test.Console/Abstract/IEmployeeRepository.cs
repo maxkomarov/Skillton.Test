@@ -7,7 +7,7 @@ namespace Skillton.Test.Console_Net48.Abstract
     /// Интерфейс взаимодействия с источником данных, 
     /// изолированный (ну, почти) от конкретной реализации БД (условный репозиторий)
     /// </summary>
-    internal interface IDataController
+    internal interface IEmployeeRepository
     {
         /// <summary>
         /// Создать запись в Employee в БД
@@ -53,6 +53,8 @@ namespace Skillton.Test.Console_Net48.Abstract
         /// выше средней арифметической зарплаты по всем сотрудникам.
         /// </summary>
         /// <returns>int - кол-во, получающее выше средней, decimal - значение средней з/п</returns>
-        Tuple<int, decimal> GetAboveAvgSalaryCount();        
+        Tuple<int, decimal> GetAboveAvgSalaryCount();
+
+        void SaveChanges(IEmployee employee);
     }
 }

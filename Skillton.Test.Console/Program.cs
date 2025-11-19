@@ -1,5 +1,6 @@
 ﻿using Skillton.Test.Console_Net48.Abstract;
-using Skillton.Test.Console_Net48.Controllers;
+using Skillton.Test.Console_Net48.Repositories;
+using Skillton.Test.Console_Net48.Services;
 using System;
 using System.Text;
 
@@ -11,7 +12,7 @@ namespace Skillton.Test.Console_Net48
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            LogController logController = null;
+            LogService logController = null;
 
             //Цепляемся к необработанным
             AppDomain currentDomain = AppDomain.CurrentDomain;
@@ -27,7 +28,7 @@ namespace Skillton.Test.Console_Net48
             try
             {
                 //Инициализация контроллера конфигурации
-                ConfigController configController = new ConfigController();
+                ConfigService configController = new ConfigService();
                 if (configController.Config == null)
                     throw new Exception("Конфигурация приложения не инициализирована: " +
                         "продолжение невозможно, приложение остановлено!");
@@ -41,16 +42,16 @@ namespace Skillton.Test.Console_Net48
                         "MS SQL Compact Edition не установлена, продолжение невозможно");
 
                 //Инициализация логгера
-                logController = new LogController(configController.Config.LogConfigParams);
+                logController = new LogService(configController.Config.LogConfigParams);
                 logController.Write("Приложение запущено...");
 
                 //Инициализация валидатора сущности
-                ValidationController validationController
-                    = new ValidationController(configController.Config.EmployeeValidationParams);
+                ValidationService validationController
+                    = new ValidationService(configController.Config.EmployeeValidationParams);
 
                 //Инициализация контроллера БД
-                SqlCEDatabaseController databaseController
-                    = new SqlCEDatabaseController(
+                SqlCEDatabaseService databaseController
+                    = new SqlCEDatabaseService(
                         configController.Config.DataBaseConfigParams,
                         logController.Write);
 
@@ -58,8 +59,8 @@ namespace Skillton.Test.Console_Net48
                 databaseController.EnsureCreated();
 
                 //Инициализация моста к контроллеру БД
-                DataController dataController
-                    = new DataController(
+                EmployeeRepository dataController
+                    = new EmployeeRepository(
                         databaseController,
                         logController.Write);
 

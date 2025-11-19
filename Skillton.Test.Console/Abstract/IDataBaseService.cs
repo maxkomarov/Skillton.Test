@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlServerCe;
 
 namespace Skillton.Test.Console_Net48.Abstract
 {
     /// <summary>
     /// Интерфейс контроллера БД
     /// </summary>
-    internal interface IDataBaseController
+    internal interface IDataBaseService
     {
         /// <summary>
         /// Создать БД, если не существует

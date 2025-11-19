@@ -9,15 +9,15 @@ namespace Skillton.Test.Console_Net48.Controllers
     internal class InputEmployeeController
     {
         IEmployee _employee;
-        private readonly IValidationController _validationController;
-        private readonly IDataController _dataController;
-        public InputEmployeeController(IValidationController validationController, IDataController dataController) 
+        private readonly IValidationService _validationController;
+        private readonly IEmployeeRepository _repository;
+        public InputEmployeeController(IValidationService validationController, IEmployeeRepository dataController) 
         {
             _validationController = validationController
                 ?? throw new ArgumentNullException(Constants.NULLABLE_ARGUMENT_NOT_ALLOWED, 
                     nameof(validationController));
 
-            _dataController = dataController
+            _repository = dataController
                 ?? throw new ArgumentNullException(Constants.NULLABLE_ARGUMENT_NOT_ALLOWED,
                     nameof(dataController));
         }
@@ -189,21 +189,7 @@ namespace Skillton.Test.Console_Net48.Controllers
             try
             {
                 _validationController.Validate(_employee);
-
-                if (_employee.EmployeeId == 0)
-                {
-                    if (_dataController.AddEmployee(_employee) > 0)
-                        Console.WriteLine($"Запись успешно создана в БД!");
-                    else
-                        Console.WriteLine($"Запись в БД не добавлена! Инспектируйте файл лога на предмет ошибок!");
-                }
-                else
-                {
-                    if (_dataController.UpdateEmployee(_employee) > 0)
-                        Console.WriteLine($"Запись успешно изменена в БД!");
-                    else
-                        Console.WriteLine($"Запись в БД не изменена! Инспектируйте файл лога на предмет ошибок!");
-                }
+                _repository.SaveChanges(_employee);
             }
             catch (Exception e)
             {

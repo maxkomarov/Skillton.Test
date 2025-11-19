@@ -3,15 +3,15 @@ using Skillton.Test.Console_Net48.Abstract;
 using Skillton.Test.Console_Net48.Models;
 using System;
 
-namespace Skillton.Test.Console_Net48
+namespace Skillton.Test.Console_Net48.Services
 {
     /// <summary>
     /// Имплементация контроллера конфига
     /// </summary>
-    /// <seealso cref="Skillton.Test.Console_Net48.Abstract.IConfigController" />
-    internal class ConfigController : IConfigController
+    /// <seealso cref="Skillton.Test.Console_Net48.Abstract.IConfigService" />
+    internal class ConfigService : IConfigService
     {
-        public ConfigController()
+        public ConfigService()
         {
             Config = new Config();
         }

@@ -1,5 +1,6 @@
 ﻿using Skillton.Test.Console_Net48.Abstract;
 using Skillton.Test.Console_Net48.Controllers;
+using Skillton.Test.Console_Net48.Helpers;
 using Skillton.Test.Console_Net48.Models;
 using System;
 using System.Collections.Generic;
@@ -7,19 +8,19 @@ using System.Linq;
 
 namespace Skillton.Test.Console_Net48
 {
-    internal class InputController : ControllerBase, IInputController
+    internal class InputController : ServiceBase, IInputController
     {
-        private readonly IDataController _dataController;
-        private readonly IValidationController _validationController;
+        private readonly IEmployeeRepository _repository;
+        private readonly IValidationService _validationController;
         public InputController(
-            IValidationController validationController,
-            IDataController dataController,
+            IValidationService validationController,
+            IEmployeeRepository dataController,
             Action<string> writeLogAction) 
         {
             _validationController = validationController 
                 ?? throw new ArgumentNullException(Constants.NULLABLE_ARGUMENT_NOT_ALLOWED, nameof(validationController));
 
-            _dataController = dataController
+            _repository = dataController
                 ?? throw new ArgumentNullException(Constants.NULLABLE_ARGUMENT_NOT_ALLOWED, nameof(dataController));
 
             WriteLogAction = writeLogAction;
@@ -27,7 +28,7 @@ namespace Skillton.Test.Console_Net48
 
         #region IValidationController имплементация
 
-        public IValidationController ValidationController { get; private set; }
+        public IValidationService ValidationController { get; private set; }
 
         public void Run()
         {
@@ -97,7 +98,7 @@ namespace Skillton.Test.Console_Net48
             Console.WriteLine();
 
             IEmployee employee = new Employee();
-            InputEmployeeController input = new InputEmployeeController(_validationController, _dataController);
+            InputEmployeeController input = new InputEmployeeController(_validationController, _repository);
             input.Run(employee);            
         }
 
@@ -106,7 +107,7 @@ namespace Skillton.Test.Console_Net48
         /// </summary>
         void ShowAll()
         {
-            IList<IEmployee> data = _dataController.GetEmployees();
+            IList<IEmployee> data = _repository.GetEmployees();
             Console.WriteLine();
             Console.WriteLine("\tЗаписи в таблице сотрудников (Employees):");
             Console.WriteLine();
@@ -128,7 +129,7 @@ namespace Skillton.Test.Console_Net48
             {
                 Console.WriteLine();
                 {
-                    IEmployee employee = _dataController.GetEmployee(id);
+                    IEmployee employee = _repository.GetEmployee(id);
                     if (employee == null)
                     {
                         Console.WriteLine();
@@ -136,7 +137,7 @@ namespace Skillton.Test.Console_Net48
                         return;
                     }
 
-                    InputEmployeeController inputEmployeeController = new InputEmployeeController(_validationController, _dataController);
+                    InputEmployeeController inputEmployeeController = new InputEmployeeController(_validationController, _repository);
                     inputEmployeeController.Run(employee);
                 }
             }
@@ -158,7 +159,7 @@ namespace Skillton.Test.Console_Net48
             if (int.TryParse(input, out int id))
             {
                 Console.WriteLine();
-                if (_dataController.DeleteEmployee(id) > 0)
+                if (_repository.DeleteEmployee(id) > 0)
                     Console.WriteLine($"Запись с ИД={id} удалена из БД успешно!");
                 else
                     Console.WriteLine($"Записи с ИД={id} в БД не существует. Изменений в БД не зафиксировано!");
@@ -170,7 +171,7 @@ namespace Skillton.Test.Console_Net48
 
         void GetAboveAvgSalaryCount()
         {            
-            Tuple<int, decimal> res = _dataController.GetAboveAvgSalaryCount();
+            Tuple<int, decimal> res = _repository.GetAboveAvgSalaryCount();
             Console.WriteLine();
             Console.WriteLine($"-> Количество сотрудников, имеющих з/п выше средней ( {res.Item2:C2} ): {res.Item1}");
             Console.WriteLine();
@@ -182,7 +183,7 @@ namespace Skillton.Test.Console_Net48
         void AddSamples()
         {
             Console.WriteLine();
-            _dataController.AddEmployeeRange(Employee.GetSamples());
+            _repository.AddEmployeeRange(Employee.GetSamples());
             Console.WriteLine("Тестовые записи добавлены в БД!");
             Console.WriteLine();
         }        

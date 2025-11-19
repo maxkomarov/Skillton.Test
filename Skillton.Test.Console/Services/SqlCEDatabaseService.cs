@@ -5,19 +5,19 @@ using System.Data.SqlServerCe;
 using System.IO;
 using System.Linq;
 
-namespace Skillton.Test.Console_Net48.Controllers
+namespace Skillton.Test.Console_Net48.Services
 {
-    internal class SqlCEDatabaseController : ControllerBase, IDataBaseController
+    internal class SqlCEDatabaseService : ServiceBase, IDataBaseService
     {        
         private readonly IDatabaseConfigParams _dataBaseConfigParams;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SqlCEDatabaseController"/> class.
+        /// Initializes a new instance of the <see cref="SqlCEDatabaseService"/> class.
         /// </summary>
         /// <param name="dataBaseConfigParams">The data base configuration parameters.</param>
         /// <param name="writeLogAction">The write log action.</param>
         /// <exception cref="System.ArgumentNullException">dataBaseConfigParams</exception>
-        public SqlCEDatabaseController(IDatabaseConfigParams dataBaseConfigParams,
+        public SqlCEDatabaseService(IDatabaseConfigParams dataBaseConfigParams,
                                   Action<string> writeLogAction = null)
         {
             _dataBaseConfigParams = dataBaseConfigParams 
@@ -26,7 +26,7 @@ namespace Skillton.Test.Console_Net48.Controllers
             WriteLogAction = writeLogAction;
         }
 
-        #region IDataBaseController имплементация        
+        #region IDataBaseService имплементация        
 
         public void EnsureCreated()
         {

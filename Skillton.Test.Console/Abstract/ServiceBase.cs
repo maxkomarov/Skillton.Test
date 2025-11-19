@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Skillton.Test.Console_Net48.Controllers
+namespace Skillton.Test.Console_Net48.Abstract
 {
     /// <summary>
     /// Абстрактная база контроллера, чтобы не тиражировать обертку писателя логгера
     /// </summary>
-    internal abstract class ControllerBase
+    internal abstract class ServiceBase
     {
         /// <summary>
         /// Зависимость, которая умеет писать куда-нибудь лог
