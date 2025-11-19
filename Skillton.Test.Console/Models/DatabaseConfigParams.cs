@@ -32,12 +32,7 @@ namespace Skillton.Test.Console_Net48.Models
                 DatabaseFileName = Constants.DEFAULT_DB_FILENAME;
 
             _databasePassword = Decrypt(Properties.Settings.Default.DatabasePassword, _passwordKey);            
-        }
-
-        public void Save()
-        {
-            throw new System.NotImplementedException();
-        }
+        }        
 
         public string Encrypt(string strToEncrypt, string strKey)
         {

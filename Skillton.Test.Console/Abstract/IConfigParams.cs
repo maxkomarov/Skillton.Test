@@ -8,11 +8,6 @@
         /// <summary>
         /// Загрузка (инициализация)
         /// </summary>
-        void Load();
-
-        /// <summary>
-        /// Сохранение
-        /// </summary>
-        void Save();
+        void Load();        
     }
 }
