@@ -78,6 +78,7 @@
     <Compile Include="Controllers\InputEmployeeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\ValidationController.cs" />
+    <Compile Include="Helpers\Cryptex.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\DatabaseConfigParams.cs" />
     <Compile Include="Models\Employee.cs" />
