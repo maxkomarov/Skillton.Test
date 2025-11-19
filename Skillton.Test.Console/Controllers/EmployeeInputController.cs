@@ -7,12 +7,12 @@ namespace Skillton.Test.Console_Net48.Controllers
     /// <summary>
     /// Контроллер редактора записи
     /// </summary>
-    internal class InputEmployeeController
+    internal class EmployeeInputController
     {
         private EmployeePresenter _employeePresenter;
         private readonly IValidationService _validationService;
         private readonly IEmployeeRepository _repository;
-        public InputEmployeeController(IValidationService validationController, IEmployeeRepository dataController) 
+        public EmployeeInputController(IValidationService validationController, IEmployeeRepository dataController) 
         {
             _validationService = validationController
                 ?? throw new ArgumentNullException(Constants.NULLABLE_ARGUMENT_NOT_ALLOWED, 

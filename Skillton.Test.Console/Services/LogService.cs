@@ -35,7 +35,7 @@ namespace Skillton.Test.Console_Net48.Services
         public void Write(string message)
         {
             File.AppendAllText(LogConfigParams.LogFileName, $"{DateTime.Now}: {message}\r\n");
-            Console.WriteLine(message);
+            //Console.WriteLine(message); //для дублирования вывода комманд к БД на консоль раскомментитть
         }
     }
 }

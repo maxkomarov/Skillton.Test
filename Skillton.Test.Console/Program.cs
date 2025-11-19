@@ -7,22 +7,22 @@ using System.Text;
 namespace Skillton.Test.Console_Net48
 {
     internal class Program
-    {        
+    {
+        static LogService _logger = null;
+
         static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.UTF8;
-
-            LogService logController = null;
+            Console.OutputEncoding = Encoding.UTF8; //Иначе символ рубля не выводится           
 
             //Цепляемся к необработанным
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += (o,e) =>
             {
-                logController?.Write(e.ToString());
-                WriteMessage(logController, "\r\nОШИБКА!!! Возникло необработанное исключение!");
+                _logger?.Write(e.ToString());
+                WriteMessage(_logger, "\r\nОШИБКА!!! Возникло необработанное исключение!");
                 if (e.IsTerminating)
-                    WriteMessage(logController, "Выполняется аварийная остановка приложения.\r\n");
-                WriteMessage(logController, e.ExceptionObject?.ToString());
+                    WriteMessage(_logger, "Выполняется аварийная остановка приложения.\r\n");
+                WriteMessage(_logger, e.ExceptionObject?.ToString());
             };
 
             try
@@ -36,14 +36,14 @@ namespace Skillton.Test.Console_Net48
                 //Проверяем наличие SQL CE
                 Tuple<bool, string> res = configController.IsSqlCeInstalled();
                 if (res.Item1)
-                    WriteMessage(logController, $"\r\nMS SQL Compact Edition установлена, версия: [{res.Item2}]");
+                    WriteMessage(_logger, $"\r\nMS SQL Compact Edition установлена, версия: [{res.Item2}]");
                 else
                     throw new PlatformNotSupportedException(
                         "MS SQL Compact Edition не установлена, продолжение невозможно");
 
                 //Инициализация логгера
-                logController = new LogService(configController.Config.LogConfigParams);
-                logController.Write("Приложение запущено...");
+                _logger = new LogService(configController.Config.LogConfigParams);
+                _logger.Write("Приложение запущено...");
 
                 //Инициализация валидатора сущности
                 ValidationService validationController
@@ -53,7 +53,7 @@ namespace Skillton.Test.Console_Net48
                 SqlCEDatabaseService databaseController
                     = new SqlCEDatabaseService(
                         configController.Config.DataBaseConfigParams,
-                        logController.Write);
+                        _logger.Write);
 
                 //Инициализация БД (если её нет)
                 databaseController.EnsureCreated();
@@ -62,32 +62,32 @@ namespace Skillton.Test.Console_Net48
                 EmployeeRepository dataController
                     = new EmployeeRepository(
                         databaseController,
-                        logController.Write);
+                        _logger.Write);
 
                 //Инициализация контроллера ввода
-                InputController inputController
-                    = new InputController(
+                RootInputController inputController
+                    = new RootInputController(
                         validationController,
                         dataController,
-                        logController.Write);
+                        _logger.Write);
 
                 //Запуск главного процесса
                 inputController.Run();
 
                 //Закочили по команде, выходим...
-                logController.Write("Работа приложения завершена. Выход...");
+                _logger.Write("Работа приложения завершена. Выход...");
             }
             catch (PlatformNotSupportedException pnse)
             {
-                WriteMessage(logController, "Конфигурация системы не соответствует требованиям приложения:");
-                WriteMessage(logController, pnse.Message);
+                WriteMessage(_logger, "Конфигурация системы не соответствует требованиям приложения:");
+                WriteMessage(_logger, pnse.Message);
             }
             catch (Exception ex)
             {
-                WriteMessage(logController, "В процессе работы приложения возникло исключение:");
-                WriteMessage(logController, ex.ToString());
-                WriteMessage(logController, ex.Source.ToString());
-                WriteMessage(logController, ex.StackTrace.ToString());
+                WriteMessage(_logger, "В процессе работы приложения возникло исключение:");
+                WriteMessage(_logger, ex.ToString());
+                WriteMessage(_logger, ex.Source.ToString());
+                WriteMessage(_logger, ex.StackTrace.ToString());
             }
         }
 

@@ -70,13 +70,14 @@
     <Compile Include="Abstract\IEmployeeValidationParams.cs" />
     <Compile Include="Abstract\QueryConstants.cs" />
     <Compile Include="Presenters\EmployeePresenter.cs" />
+    <Compile Include="Presenters\RootPresenter.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Abstract\ServiceBase.cs" />
     <Compile Include="Helpers\EmployeeFormatter.cs" />
     <Compile Include="Services\SqlCEDatabaseService.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
-    <Compile Include="Controllers\InputController.cs" />
-    <Compile Include="Controllers\InputEmployeeController.cs" />
+    <Compile Include="Controllers\RootInputController.cs" />
+    <Compile Include="Controllers\EmployeeInputController.cs" />
     <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\ValidationService.cs" />
     <Compile Include="Helpers\Cryptex.cs" />

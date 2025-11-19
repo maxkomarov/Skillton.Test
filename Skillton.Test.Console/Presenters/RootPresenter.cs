@@ -6,106 +6,51 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Skillton.Test.Console_Net48
+namespace Skillton.Test.Console_Net48.Presenters
 {
-    internal class InputController : ServiceBase, IInputController
+    internal class RootPresenter
     {
+        private readonly IValidationService _validationService;
         private readonly IEmployeeRepository _repository;
-        private readonly IValidationService _validationController;
-        public InputController(
-            IValidationService validationController,
-            IEmployeeRepository dataController,
-            Action<string> writeLogAction) 
+
+        public RootPresenter(
+            IValidationService validationService,
+            IEmployeeRepository repository)
         {
-            _validationController = validationController 
-                ?? throw new ArgumentNullException(Constants.NULLABLE_ARGUMENT_NOT_ALLOWED, nameof(validationController));
+            if (validationService == null)
+                throw new ArgumentNullException(
+                    Constants.NULLABLE_ARGUMENT_NOT_ALLOWED,
+                    nameof(validationService));
 
-            _repository = dataController
-                ?? throw new ArgumentNullException(Constants.NULLABLE_ARGUMENT_NOT_ALLOWED, nameof(dataController));
+            if (repository == null)
+                throw new ArgumentNullException(
+                    Constants.NULLABLE_ARGUMENT_NOT_ALLOWED,
+                    nameof(repository));
 
-            WriteLogAction = writeLogAction;
+            _validationService = validationService;
+            _repository = repository;
         }
 
-        #region IValidationController имплементация
-
-        public IValidationService ValidationController { get; private set; }
-
-        public void Run()
-        {
-            WriteLog("Рабочий процесс запущен...");
-
-            while (RunRootSelector()) ;
-
-            WriteLog("Рабочий процесс завершен пользователем...");
-        }
-
-        #endregion
-
-        private bool RunRootSelector()
-        {
-            //Console.Clear(); 
-            Console.WriteLine();
-            Console.WriteLine("--- Главное меню---");
-            Console.WriteLine();
-            Console.WriteLine("\t1. Добавить нового сотрудника");
-            Console.WriteLine("\t2. Просмотреть всех сотрудников");
-            Console.WriteLine("\t3. Обновить информацию о сотруднике");
-            Console.WriteLine("\t4. Удалить сотрудника");
-            Console.WriteLine("\t5. Вывести кол-во сотрудников, зарплата (Salary) которых выше средней арифметической зарплаты по всем сотрудникам");
-            Console.WriteLine("\t6. Создать записи для тестов");
-            Console.WriteLine("\t9. Выйти из приложения");
-            Console.WriteLine();
-            Console.Write("Введите команду: ");
-
-            string choice = Console.ReadLine();
-
-            switch (choice)
-            {
-                case "1":
-                    AddNew();
-                    return true; 
-                case "2":
-                    ShowAll();
-                    return true;
-                case "3":
-                    UpdateEmployee();
-                    return true;
-                case "4":
-                    DeleteEmployee();
-                    return true;
-                case "5":
-                    GetAboveAvgSalaryCount();
-                    return true;
-                case "6":
-                    AddSamples();
-                    return true;
-                case "9":
-                    return false; 
-                default:
-                    Console.WriteLine("Неверный выбор. Нажмите любую клавишу и попробуйте снова.");
-                    Console.ReadKey(); 
-                    return true; 
-            }
-        }
 
         /// <summary>
         /// 1. Добавить нового сотрудника
         /// </summary>
-        void AddNew()
+        public void AddNew()
         {
             Console.WriteLine();
             Console.WriteLine("ДОБАВЛЕНИЕ ЗАПИСИ!");
             Console.WriteLine();
 
             IEmployee employee = new Employee();
-            InputEmployeeController input = new InputEmployeeController(_validationController, _repository);
-            input.Run(employee);            
+            EmployeeInputController input =
+                new EmployeeInputController(_validationService, _repository);
+            input.Run(employee);
         }
 
         /// <summary>
         /// 2. Просмотреть всех сотрудников
         /// </summary>
-        void ShowAll()
+        public void ShowAll()
         {
             IList<IEmployee> data = _repository.GetEmployees();
             Console.WriteLine();
@@ -118,7 +63,7 @@ namespace Skillton.Test.Console_Net48
             Console.WriteLine();
         }
 
-        void UpdateEmployee()
+        public void UpdateEmployee()
         {
             Console.WriteLine();
             Console.WriteLine("\tИЗМЕНЕНИЕ ЗАПИСИ!");
@@ -137,7 +82,7 @@ namespace Skillton.Test.Console_Net48
                         return;
                     }
 
-                    InputEmployeeController inputEmployeeController = new InputEmployeeController(_validationController, _repository);
+                    EmployeeInputController inputEmployeeController = new EmployeeInputController(_validationService, _repository);
                     inputEmployeeController.Run(employee);
                 }
             }
@@ -149,7 +94,7 @@ namespace Skillton.Test.Console_Net48
         /// <summary>
         /// 4. Удалить сотрудника
         /// </summary>
-        void DeleteEmployee()
+        public void DeleteEmployee()
         {
             Console.WriteLine();
             Console.WriteLine("\tУДАЛЕНИЕ ЗАПИСИ!");
@@ -169,8 +114,8 @@ namespace Skillton.Test.Console_Net48
             Console.WriteLine();
         }
 
-        void GetAboveAvgSalaryCount()
-        {            
+        public void GetAboveAvgSalaryCount()
+        {
             Tuple<int, decimal> res = _repository.GetAboveAvgSalaryCount();
             Console.WriteLine();
             Console.WriteLine($"-> Количество сотрудников, имеющих з/п выше средней ( {res.Item2:C2} ): {res.Item1}");
@@ -180,12 +125,12 @@ namespace Skillton.Test.Console_Net48
         /// <summary>
         /// 6. Создать записи для тестов
         /// </summary>
-        void AddSamples()
+        public void AddSamples()
         {
             Console.WriteLine();
             _repository.AddEmployeeRange(Employee.GetSamples());
             Console.WriteLine("Тестовые записи добавлены в БД!");
             Console.WriteLine();
-        }        
+        }
     }
 }
